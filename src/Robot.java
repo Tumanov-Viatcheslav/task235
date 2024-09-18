@@ -1,11 +1,13 @@
 import java.util.ArrayDeque;
+import java.util.TreeSet;
 
 public class Robot {
     private final int MAX_STEPS = 50;
-    private int x = 0, y = 0;
+    private final Coordinates position = new Coordinates(MAX_STEPS, MAX_STEPS);
     private Direction direction = Direction.UP;
     private final RobotMap map = new RobotMap(MAX_STEPS);
-    private ArrayDeque<Action> commandsToDo = new ArrayDeque<>();
+    private final ArrayDeque<Action> commandsToDo = new ArrayDeque<>();
+    private final TreeSet<Coordinates> path = new TreeSet<>(new CoordinatesComparator());
 
     private void turnLeft() {
         switch (direction) {
@@ -39,35 +41,41 @@ public class Robot {
         }
     }
 
+    private void savePositionInMemory() {
+        path.add(position.copy());
+    }
+
     private void stepForward() {
+        savePositionInMemory();
         switch (direction) {
             case UP:
-                y++;
+                position.y++;
                 return;
             case LEFT:
-                x--;
+                position.x--;
                 return;
             case DOWN:
-                y--;
+                position.y--;
                 return;
             case RIGHT:
-                x++;
+                position.x++;
         }
     }
 
     private boolean leaveTrace() {
-        if (!map.traceOnMAP[x + MAX_STEPS][y + MAX_STEPS]) {
-            map.traceOnMAP[x + MAX_STEPS][y + MAX_STEPS] = true;
+        if (!map.traceOnMAP[position.x][position.y]) {
+            map.traceOnMAP[position.x][position.y] = true;
             return true;
         }
         return false;
     }
 
-    private int doAction(Action action) {
+    private int doActionTrace(Action action) {
         return switch (action) {
             case FORWARD -> {
                 stepForward();
-                yield leaveTrace() ? 0 : 1;
+                leaveTrace();
+                yield path.contains(position) ? 1 : 0;
             }
             case LEFT -> {
                 turnLeft();
@@ -100,7 +108,7 @@ public class Robot {
         int stepsCounter = 0;
         parseCommands(commands);
         while (!commandsToDo.isEmpty()) {
-            switch (doAction(commandsToDo.pop())) {
+            switch (doActionTrace(commandsToDo.pop())) {
                 case 0:
                     stepsCounter++;
                     break;
