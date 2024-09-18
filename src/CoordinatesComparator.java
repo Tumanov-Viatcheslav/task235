@@ -20,8 +20,8 @@ public class CoordinatesComparator implements Comparator<Coordinates> {
      * y)==0} implies that {@code signum(compare(x,
      * z))==signum(compare(y, z))} for all {@code z}.
      *
-     * @param o1 the first object to be compared.
-     * @param o2 the second object to be compared.
+     * @param p1 the first object to be compared.
+     * @param p2 the second object to be compared.
      * @return a negative integer, zero, or a positive integer as the
      * first argument is less than, equal to, or greater than the
      * second.
