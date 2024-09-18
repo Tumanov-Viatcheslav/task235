@@ -105,7 +105,7 @@ public class Robot {
         };
     }
 
-    private void parseCommands(String commands) {
+    public void inputProgram(String commands) {
         for (char c : commands.toCharArray()) {
             switch (c) {
                 case 'S':
@@ -121,9 +121,9 @@ public class Robot {
         }
     }
 
-    public int inputProgram(String commands) {
+    public int executeProgram() {
         int stepsCounter = 0;
-        parseCommands(commands);
+
         while (!commandsToDo.isEmpty()) {
             switch (doAction(commandsToDo.pop())) {
                 case 0:

@@ -7,8 +7,9 @@ public class RobotProblem {
         String commands = inputData();
 
         Robot robot = new Robot();
+        robot.inputProgram(commands);
 
-        System.out.println(robot.inputProgram(commands));
+        System.out.println(robot.executeProgram());
     }
 
     private static String inputData() {
