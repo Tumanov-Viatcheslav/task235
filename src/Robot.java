@@ -74,6 +74,23 @@ public class Robot {
         return switch (action) {
             case FORWARD -> {
                 stepForward();
+                yield leaveTrace() ? 0 : 1;
+            }
+            case LEFT -> {
+                turnLeft();
+                yield -1;
+            }
+            case RIGHT -> {
+                turnRight();
+                yield -1;
+            }
+        };
+    }
+
+    private int doAction(Action action) {
+        return switch (action) {
+            case FORWARD -> {
+                stepForward();
                 leaveTrace();
                 yield path.contains(position) ? 1 : 0;
             }
@@ -108,7 +125,7 @@ public class Robot {
         int stepsCounter = 0;
         parseCommands(commands);
         while (!commandsToDo.isEmpty()) {
-            switch (doActionTrace(commandsToDo.pop())) {
+            switch (doAction(commandsToDo.pop())) {
                 case 0:
                     stepsCounter++;
                     break;
