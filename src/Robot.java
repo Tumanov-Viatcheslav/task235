@@ -1,4 +1,5 @@
 import java.util.ArrayDeque;
+import java.util.HashSet;
 import java.util.TreeSet;
 
 public class Robot {
@@ -7,7 +8,8 @@ public class Robot {
     private Direction direction = Direction.UP;
     private final RobotMap map = new RobotMap(MAX_STEPS);
     private final ArrayDeque<Action> commandsToDo = new ArrayDeque<>();
-    private final TreeSet<Coordinates> path = new TreeSet<>(new CoordinatesComparator());
+    //private final TreeSet<Coordinates> path = new TreeSet<>(new CoordinatesComparator());
+    private final HashSet<Coordinates> path = new HashSet<>();
 
     private void turnLeft() {
         switch (direction) {
